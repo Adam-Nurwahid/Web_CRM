@@ -1,0 +1,73 @@
+import { Customer, Deal } from "@/types";
+
+export const customers: Customer[] = [
+  {
+    id: "c1",
+    name: "Rina Wulandari",
+    email: "rina@kopinusantara.id",
+    phone: "0812-3456-7890",
+    company: "Kopi Nusantara",
+    status: "customer",
+    value: 48_500_000,
+    createdAt: "2026-01-14",
+  },
+  {
+    id: "c2",
+    name: "Bagas Pratama",
+    email: "bagas@mediakreasi.co.id",
+    phone: "0821-9988-1122",
+    company: "Media Kreasi",
+    status: "prospect",
+    value: 0,
+    createdAt: "2026-03-02",
+  },
+  {
+    id: "c3",
+    name: "Sari Anindita",
+    email: "sari@logistikcepat.com",
+    phone: "0857-1200-4455",
+    company: "Logistik Cepat",
+    status: "lead",
+    value: 0,
+    createdAt: "2026-05-21",
+  },
+  {
+    id: "c4",
+    name: "Dimas Hartono",
+    email: "dimas@edutekno.id",
+    phone: "0813-7766-5544",
+    company: "EduTekno",
+    status: "customer",
+    value: 125_000_000,
+    createdAt: "2025-11-08",
+  },
+  {
+    id: "c5",
+    name: "Maya Kusuma",
+    email: "maya@butikmaya.id",
+    phone: "0878-3321-9087",
+    company: "Butik Maya",
+    status: "churned",
+    value: 12_300_000,
+    createdAt: "2025-08-19",
+  },
+  {
+    id: "c6",
+    name: "Fajar Nugroho",
+    email: "fajar@agrotani.co.id",
+    phone: "0852-4410-7766",
+    company: "AgroTani",
+    status: "prospect",
+    value: 0,
+    createdAt: "2026-08-30",
+  },
+];
+
+export const deals: Deal[] = [
+  { id: "d1", title: "Paket aplikasi kasir", customerId: "c1", amount: 35_000_000, stage: "won", dueDate: "2026-09-10" },
+  { id: "d2", title: "Kampanye konten Q4", customerId: "c2", amount: 22_000_000, stage: "proposal", dueDate: "2026-11-15" },
+  { id: "d3", title: "Integrasi tracking pengiriman", customerId: "c3", amount: 60_000_000, stage: "contacted", dueDate: "2026-12-01" },
+  { id: "d4", title: "Lisensi platform kelas online", customerId: "c4", amount: 90_000_000, stage: "negotiation", dueDate: "2026-11-30" },
+  { id: "d5", title: "Website katalog produk", customerId: "c5", amount: 15_000_000, stage: "lost", dueDate: "2026-07-20" },
+  { id: "d6", title: "Dashboard monitoring panen", customerId: "c6", amount: 48_000_000, stage: "new", dueDate: "2027-01-12" },
+];
