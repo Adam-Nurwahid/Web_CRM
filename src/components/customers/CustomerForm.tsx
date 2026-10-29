@@ -37,29 +37,27 @@ function validate(values: FormValues): Errors {
   return errors;
 }
 
-const inputClass = (hasError: boolean) =>
-  `w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 ${
-    hasError
-      ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
-      : "border-slate-200 focus:border-indigo-400 focus:ring-indigo-100"
-  }`;
-
 function Field({
   label,
   error,
   children,
+  hint,
 }: {
   label: string;
   error?: string;
   children: React.ReactNode;
+  hint?: string;
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">
-        {label}
+      <span className="mb-1.5 flex items-center justify-between gap-2">
+        <span className="text-[11px] font-medium text-muted">{label}</span>
+        {hint && <span className="text-[9.5px] text-faint">{hint}</span>}
       </span>
       {children}
-      {error && <span className="mt-1 block text-xs text-rose-600">{error}</span>}
+      {error && (
+        <span className="mt-1 block text-[10px] text-rose">{error}</span>
+      )}
     </label>
   );
 }
@@ -109,12 +107,12 @@ export default function CustomerForm({
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Nama" error={errors.name}>
+        <Field label="Nama lengkap" error={errors.name}>
           <input
             type="text"
             value={values.name}
             onChange={(e) => setField("name", e.target.value)}
-            className={inputClass(!!errors.name)}
+            className={`input ${errors.name ? "input-error" : ""}`}
             autoFocus
           />
         </Field>
@@ -123,7 +121,7 @@ export default function CustomerForm({
             type="text"
             value={values.company}
             onChange={(e) => setField("company", e.target.value)}
-            className={inputClass(!!errors.company)}
+            className={`input ${errors.company ? "input-error" : ""}`}
           />
         </Field>
       </div>
@@ -133,25 +131,25 @@ export default function CustomerForm({
           type="email"
           value={values.email}
           onChange={(e) => setField("email", e.target.value)}
-          className={inputClass(!!errors.email)}
+          className={`input ${errors.email ? "input-error" : ""}`}
         />
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Telepon" error={errors.phone}>
+        <Field label="Telepon" error={errors.phone} hint="Opsional">
           <input
             type="tel"
             value={values.phone}
             onChange={(e) => setField("phone", e.target.value)}
             placeholder="0812-0000-0000"
-            className={inputClass(!!errors.phone)}
+            className={`input ${errors.phone ? "input-error" : ""}`}
           />
         </Field>
         <Field label="Status">
           <select
             value={values.status}
             onChange={(e) => setField("status", e.target.value as CustomerStatus)}
-            className={inputClass(false)}
+            className="input cursor-pointer pr-8"
           >
             {(Object.keys(STATUS_CONFIG) as CustomerStatus[]).map((s) => (
               <option key={s} value={s}>
@@ -162,29 +160,22 @@ export default function CustomerForm({
         </Field>
       </div>
 
-      <Field label="Nilai transaksi (Rp)" error={errors.value}>
+      <Field label="Nilai transaksi (Rp)" error={errors.value} hint="Lifetime value">
         <input
           type="number"
           min={0}
           value={values.value}
           onChange={(e) => setField("value", e.target.value)}
           placeholder="0"
-          className={inputClass(!!errors.value)}
+          className={`input ${errors.value ? "input-error" : ""}`}
         />
       </Field>
 
-      <div className="flex justify-end gap-2 pt-2">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
-        >
+      <div className="flex flex-col-reverse gap-2 border-t border-line/60 pt-4 sm:flex-row sm:justify-end">
+        <button type="button" onClick={onCancel} className="btn btn-secondary">
           Batal
         </button>
-        <button
-          type="submit"
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-        >
+        <button type="submit" className="btn btn-primary">
           {customer ? "Simpan perubahan" : "Tambah customer"}
         </button>
       </div>

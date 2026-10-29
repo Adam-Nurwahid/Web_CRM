@@ -33,29 +33,27 @@ function validate(values: FormValues): Errors {
   return errors;
 }
 
-const inputClass = (hasError: boolean) =>
-  `w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 ${
-    hasError
-      ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
-      : "border-slate-200 focus:border-indigo-400 focus:ring-indigo-100"
-  }`;
-
 function Field({
   label,
   error,
   children,
+  hint,
 }: {
   label: string;
   error?: string;
   children: React.ReactNode;
+  hint?: string;
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">
-        {label}
+      <span className="mb-1.5 flex items-center justify-between gap-2">
+        <span className="text-[11px] font-medium text-muted">{label}</span>
+        {hint && <span className="text-[9.5px] text-faint">{hint}</span>}
       </span>
       {children}
-      {error && <span className="mt-1 block text-xs text-rose-600">{error}</span>}
+      {error && (
+        <span className="mt-1 block text-[10px] text-rose">{error}</span>
+      )}
     </label>
   );
 }
@@ -64,14 +62,20 @@ interface DealFormProps {
   customers: Customer[];
   onSubmit: (data: DealFormData) => void;
   onCancel: () => void;
+  defaultStage?: DealStage;
 }
 
-export default function DealForm({ customers, onSubmit, onCancel }: DealFormProps) {
+export default function DealForm({
+  customers,
+  onSubmit,
+  onCancel,
+  defaultStage,
+}: DealFormProps) {
   const [values, setValues] = useState<FormValues>({
     title: "",
     customerId: "",
     amount: "",
-    stage: "new",
+    stage: defaultStage ?? "new",
     dueDate: "",
   });
   const [errors, setErrors] = useState<Errors>({});
@@ -103,7 +107,8 @@ export default function DealForm({ customers, onSubmit, onCancel }: DealFormProp
           type="text"
           value={values.title}
           onChange={(e) => setField("title", e.target.value)}
-          className={inputClass(!!errors.title)}
+          className={`input ${errors.title ? "input-error" : ""}`}
+          placeholder="Contoh: Lisensi platform tahunan"
           autoFocus
         />
       </Field>
@@ -112,7 +117,7 @@ export default function DealForm({ customers, onSubmit, onCancel }: DealFormProp
         <select
           value={values.customerId}
           onChange={(e) => setField("customerId", e.target.value)}
-          className={inputClass(!!errors.customerId)}
+          className={`input cursor-pointer pr-8 ${errors.customerId ? "input-error" : ""}`}
         >
           <option value="">Pilih customer...</option>
           {customers.map((c) => (
@@ -130,14 +135,15 @@ export default function DealForm({ customers, onSubmit, onCancel }: DealFormProp
             min={0}
             value={values.amount}
             onChange={(e) => setField("amount", e.target.value)}
-            className={inputClass(!!errors.amount)}
+            placeholder="0"
+            className={`input ${errors.amount ? "input-error" : ""}`}
           />
         </Field>
         <Field label="Stage">
           <select
             value={values.stage}
             onChange={(e) => setField("stage", e.target.value as DealStage)}
-            className={inputClass(false)}
+            className="input cursor-pointer pr-8"
           >
             {STAGE_ORDER.map((s) => (
               <option key={s} value={s}>
@@ -153,22 +159,15 @@ export default function DealForm({ customers, onSubmit, onCancel }: DealFormProp
           type="date"
           value={values.dueDate}
           onChange={(e) => setField("dueDate", e.target.value)}
-          className={inputClass(!!errors.dueDate)}
+          className={`input cursor-pointer ${errors.dueDate ? "input-error" : ""}`}
         />
       </Field>
 
-      <div className="flex justify-end gap-2 pt-2">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
-        >
+      <div className="flex flex-col-reverse gap-2 border-t border-line/60 pt-4 sm:flex-row sm:justify-end">
+        <button type="button" onClick={onCancel} className="btn btn-secondary">
           Batal
         </button>
-        <button
-          type="submit"
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-        >
+        <button type="submit" className="btn btn-primary">
           Tambah deal
         </button>
       </div>

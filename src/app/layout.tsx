@@ -1,15 +1,30 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/layout/Sidebar";
-import Topbar from "@/components/layout/Topbar";
+import AppShell from "@/components/layout/AppShell";
 import { DataProvider } from "@/components/providers/DataProvider";
 
-const geist = Geist({ subsets: ["latin"] });
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
+});
 
 export const metadata: Metadata = {
-  title: "MiniCRM",
-  description: "CRM sederhana untuk mengelola customer dan deals",
+  title: "Juragan Aqiqah — CRM & Operations",
+  description:
+    "CRM modern untuk mengelola customer, pesanan, campaign, dan operasional bisnis aqiqah.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0908",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -18,16 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
-      <body className={geist.className}>
+    <html
+      lang="id"
+      className={`${geist.variable} ${instrumentSerif.variable}`}
+    >
+      <body className={`${geist.className} grain`}>
         <DataProvider>
-          <div className="flex h-screen overflow-hidden">
-            <Sidebar />
-            <div className="flex min-w-0 flex-1 flex-col">
-              <Topbar />
-              <main className="flex-1 overflow-y-auto p-6">{children}</main>
-            </div>
-          </div>
+          <AppShell>{children}</AppShell>
         </DataProvider>
       </body>
     </html>
